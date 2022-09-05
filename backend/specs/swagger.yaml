@@ -1,0 +1,177 @@
+openapi: 3.0.0
+info:
+  description: "API system"
+  version: "1.0.10"
+  title: "Form API"
+servers:
+  - url: http://localhost:4444
+    description: Local server
+tags:
+- name: "client"
+  description: "Access to Client"
+
+paths:
+  /client/{id}:
+    get:
+      tags:
+      - "client"
+      summary: "get client by id"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The client ID
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+        "403":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+      - "client"
+      summary: "delete client by id"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The client ID
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+        "403":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/InternalError'
+  /client:
+    get:
+      tags:
+      - "client"
+      summary: "get all client"
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Client"
+        "403":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - "client"
+      summary: "Create a client"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Client"
+              
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+        "403":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/InternalError'
+    put:
+      tags:
+      - "client"
+      summary: "Update a client"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Client"
+              
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+        "403":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/InternalError'
+    
+
+components:
+  responses:
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEntity'
+    InternalError:
+      description: Internal error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEntity'
+    Unauthorized:
+      description: Forbidden operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEntity'
+  schemas:
+    ErrorEntity:
+      type: "object"
+      properties:
+        error:
+          type: string
+    Client:
+      type: "object"
+      properties:
+        id:
+          type: integer
+        createdAt:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        cpf:
+          type: string
+        city:
+          type: string
+        state:
+          type: string

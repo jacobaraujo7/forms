@@ -1,0 +1,25 @@
+slidy: '1'
+scripts:
+  list-process: "lsof -i -n -P | grep TCP | grep query-eng"
+  
+  kill: killall "query-engine"
+  
+  playground: ./.dart_tool/prisma/query-engine --datamodel-path prisma/schema.prisma --port 4555 -g
+  
+  generate:
+    steps:
+      - name: 'Remove Folder (Linux and Mac)'
+        condition: "${System.operatingSystem} != windows"
+        run: rm -rf lib/src/generated
+
+      - name: 'Remove Folder (Windows)'
+        condition: "${System.operatingSystem} == windows"
+        run: rmdir /S /Q lib\src\generated
+
+      - name: 'Prisma generate'
+        run: dart run orm generate
+      
+      - name: 'Json Serializable'
+        run: dart run build_runner build
+
+  server: dart bin/backend.dart
