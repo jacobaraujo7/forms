@@ -1,2 +1,16 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+# Backend
+
+Commands:
+
+```
+dart pub get
+...
+slidy run generate
+```
+
+Execute:
+```
+dart bin/backend.dart
+# OR
+slidy run server
+```
