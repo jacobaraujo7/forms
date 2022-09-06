@@ -1762,11 +1762,11 @@ final dmmf.Document _dmmf =
 
 /// Prisma query engine executable.
 const String _executable =
-    '/Users/jacobmoura/Projects/forms/backend/.dart_tool/prisma/query-engine';
+    'd:\Projects\forms\backend\.dart_tool\prisma\query-engine';
 
 /// Prisma schema as string.
 final String _schema =
-    "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider        = \"prisma-client-dart\"\n  previewFeatures = [\"interactiveTransactions\"]\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./database.sqlite\"\n}\n\n\nmodel Client {\n  id        Int      @id @default(autoincrement())\n  createdAt DateTime @default(now())\n  email     String   @unique\n  name      String\n  cpf       String\n  city      String\n  state     String\n}\n\n";
+    "// This is your Prisma schema file,\r\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\r\n\r\ngenerator client {\r\n  provider        = \"prisma-client-dart\"\r\n  previewFeatures = [\"interactiveTransactions\"]\r\n}\r\n\r\ndatasource db {\r\n  provider = \"sqlite\"\r\n  url      = \"file:./database.sqlite\"\r\n}\r\n\r\n\r\nmodel Client {\r\n  id        Int      @id @default(autoincrement())\r\n  createdAt DateTime @default(now())\r\n  email     String   @unique\r\n  name      String\r\n  cpf       String\r\n  city      String\r\n  state     String\r\n}\r\n\r\n";
 
 class Datasources {
   final runtime.Datasource? db;
