@@ -1,3 +1,6 @@
+import 'package:app/app/vos/city.dart';
+import 'package:app/app/vos/state.dart';
+
 import '../vos/cpf.dart';
 import '../vos/email.dart';
 import '../vos/name.dart';
@@ -8,8 +11,14 @@ class Client {
   Email _email;
   Name _name;
   Cpf _cpf;
-  String city;
-  String state;
+  City _city;
+  State _state;
+
+  City get city => _city;
+  void setCity(String? value) => _city = City(value ?? '');
+
+  State get state => _state;
+  void setState(String? value) => _state = State(value ?? '');
 
   Cpf get cpf => _cpf;
   void setCpf(String? value) => _cpf = Cpf(value ?? '');
@@ -26,10 +35,12 @@ class Client {
     required String email,
     required String name,
     required String cpf,
-    required this.city,
-    required this.state,
+    required String city,
+    required String state,
   })  : _email = Email(email),
         _cpf = Cpf(cpf),
+        _city = City(city),
+        _state = State(state),
         _name = Name(name);
 
   factory Client.empty() {

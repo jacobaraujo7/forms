@@ -2,13 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:uno/uno.dart';
 
 import '../entities/client.dart';
+import '../models/cidade_estado.dart';
 
 enum DetailsState { saveError, saveSuccess, idle }
 
 class DetailsStore extends ChangeNotifier {
+  DetailsStore() {
+    _loadStates();
+  }
+
   final uno = Uno();
 
   var state = DetailsState.idle;
+
+  var stateList = <Estado>[];
+  var citiesList = <String>[];
 
   Future<void> createClient(Client client) async {
     try {
@@ -36,5 +44,15 @@ class DetailsStore extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  void stateSelected(Estado estado) {
+    citiesList.clear();
+    citiesList.addAll(estado.cidades);
+    notifyListeners();
+  }
+
+  void _loadStates() {
+    stateList = Estado.getAllStates();
   }
 }

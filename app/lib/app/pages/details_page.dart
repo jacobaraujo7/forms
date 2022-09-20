@@ -1,3 +1,4 @@
+import 'package:app/app/models/cidade_estado.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,10 +25,22 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   void initState() {
     super.initState();
-    client = widget.client ?? Client.empty();
+
+    if (widget.client == null) {
+      client = Client.empty();
+    } else {
+      client = widget.client!;
+      final estado = store.stateList.firstWhere(
+        (estado) => estado.nome == client.state.toString(),
+      );
+
+      store.stateSelected(estado);
+    }
 
     store.addListener(() {
-      if (store.state == DetailsState.saveSuccess) {
+      if (store.state == DetailsState.idle) {
+        setState(() {});
+      } else if (store.state == DetailsState.saveSuccess) {
         Navigator.pop(context);
       } else {
         showSnackbarError('Ocorreu um erro no servidor');
@@ -83,29 +96,72 @@ class _DetailsPageState extends State<DetailsPage> {
                 ],
               ),
               const SizedBox(height: 8),
-              MyEditText(
-                label: 'State',
-                value: client.state,
-                validator: (v) {
-                  if (client.state.isEmpty) {
-                    return 'esse campo não pode ser vazio';
+              // MyEditText(
+              //   label: 'State',
+              //   value: client.state,
+              //   validator: (v) {
+              //     if (client.state.isEmpty) {
+              //       return 'esse campo não pode ser vazio';
+              //     }
+              //     return null;
+              //   },
+              //   onChanged: (v) => client.state = v,
+              // ),
+              // const SizedBox(height: 8),
+              // MyEditText(
+              //   label: 'City',
+              //   value: client.city,
+              //   validator: (v) {
+              //     if (client.city.isEmpty) {
+              //       return 'esse campo não pode ser vazio';
+              //     }
+              //     return null;
+              //   },
+              //   onChanged: (v) => client.city = v,
+              // ),
+              const SizedBox(height: 8),
+              DropdownButtonFormField<Estado>(
+                value: client.state.toString().isEmpty ? null : Estado.withName(client.state.toString()),
+                validator: (s) => client.state.validator(),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Selecione o estado',
+                ),
+                items: store.stateList.map((estado) {
+                  return DropdownMenuItem(
+                    value: estado,
+                    child: Text(estado.nome),
+                  );
+                }).toList(),
+                onChanged: (estado) {
+                  if (estado != null) {
+                    client.setState(estado.nome);
+                    client.setCity('');
+                    store.stateSelected(estado);
                   }
-                  return null;
                 },
-                onChanged: (v) => client.state = v,
               ),
               const SizedBox(height: 8),
-              MyEditText(
-                label: 'City',
-                value: client.city,
-                validator: (v) {
-                  if (client.city.isEmpty) {
-                    return 'esse campo não pode ser vazio';
-                  }
-                  return null;
-                },
-                onChanged: (v) => client.city = v,
-              ),
+              if (client.state.isValid())
+                DropdownButtonFormField<String>(
+                  value: client.city.toString().isEmpty ? null : client.city.toString(),
+                  validator: (s) => client.city.validator(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Selecione o município',
+                  ),
+                  items: store.citiesList.map((city) {
+                    return DropdownMenuItem(
+                      value: city.toString(),
+                      child: Text(city.toString()),
+                    );
+                  }).toList(),
+                  onChanged: (city) {
+                    if (city != null) {
+                      client.setCity(city);
+                    }
+                  },
+                ),
               const SizedBox(height: 18),
               ElevatedButton(
                 onPressed: () {
